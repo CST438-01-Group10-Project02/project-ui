@@ -2,22 +2,23 @@
 
 
 
-export default function SignIn() {
+function SignIn() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     return (
-        <div>
-            <h1>Welcome</h1>
-            <UsernameInput />
-            <PasswordInput />
-            <SignInButton />
-            <SignUpButton />
-            <OAuthButton />
-        </div>
+        <>
+            <UsernameInput
+                value = {username}
+                onChange = {newText => setUsername(newText)}/>
+            <PasswordInput
+                value = {password}
+                onChange = {newText => setPassword(newText)}/>
+        </>
     )
 }
 
-
 // React component for username input
-function UsernameInput() {
+function UsernameInput(value, onChange) {
     return (
         <input>
             Username
@@ -26,7 +27,7 @@ function UsernameInput() {
 }
 
 // React component for password input
-function PasswordInput() {
+function PasswordInput(value, onChange) {
     return (
         <input>
             Password
