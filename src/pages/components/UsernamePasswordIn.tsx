@@ -19,7 +19,7 @@ const UsernamePasswordIn: FC<Props> = ({ onSubmit, submitLabel }) => {
             <div>
                 <label>Username</label>
                 <input
-                    type="text"
+                    type="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
