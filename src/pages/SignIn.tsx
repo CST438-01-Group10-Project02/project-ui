@@ -12,11 +12,16 @@ const SignIn: FC = () => {
         navigate("/dashboard");
     };
 
+    const handleSignUp = () => {
+        console.log("Sign Up");
+        navigate("/sign-up");
+    }
+
     return (
         <div>
             <h2>Sign In</h2>
             <UsernamePasswordIn onSubmit={handleSignIn} submitLabel="Sign In" />
-
+            <button onClick = {handleSignUp}>Sign Up</button>
         </div>
     );
 };
