@@ -1,32 +1,21 @@
 import {FC, useState} from "react";
 import UsernamePasswordIn from "./components/UsernamePasswordIn";
 import {useNavigate} from "react-router-dom";
-import { supabaseClient } from "../supabaseClient.js";
+import {supabaseClient} from "../supabaseClient.js";
+import {GoogleLogin, googleLogout, GoogleOAuthProvider} from "@react-oauth/google";
 
 type Props = {
     setToken: (token: any) => void
 }
 
-const SignIn = ({ setToken }: Props) => {
+const clientId = "529973095137-jfvc9lte49et6cnufi7agse38knom8bq.apps.googleusercontent.com";
+
+function onSuccess() {
+
+}
+
+const SignIn = ({setToken}: Props) => {
     const navigate = useNavigate();
-
-    /*
-    const handleSignIn = (username: string, password: string) => {
-        console.log("Sign In:", username, password);
-        // Call API here
-        navigate("/dashboard");
-        <UsernamePasswordIn onSubmit={handleSignUp} submitLabel="Sign Up"/>
-
-    };
-    */
-
-    /*
-    const handleSignUp = () => {
-        console.log("Sign Up");
-        navigate("/sign-up");
-    }
-
-     */
 
     // Adds state variable called formData
     const [formData, setFormData] = useState({
@@ -45,7 +34,7 @@ const SignIn = ({ setToken }: Props) => {
     async function handleSubmit(e) {
         e.preventDefault()
 
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
+        const {data, error} = await supabaseClient.auth.signInWithPassword({
             email: formData.email,
             password: formData.password,
         })
@@ -65,6 +54,10 @@ const SignIn = ({ setToken }: Props) => {
 
     console.log(formData)
 
+    function handleLogout(){
+        googleLogout()
+    }
+
     return (
         <div>
             <h2>Login</h2>
@@ -73,6 +66,7 @@ const SignIn = ({ setToken }: Props) => {
                     placeholder='Email'
                     name='email'
                     onChange={handleChange}
+
 
                 />
                 <input
@@ -85,9 +79,19 @@ const SignIn = ({ setToken }: Props) => {
                 <button type="submit">
                     Submit
                 </button>
+
             </form>
 
             Don't have an account? <a href="/Sign-up">Sign up</a>
+
+            <GoogleLogin
+                onSuccess={credentialResponse => {
+                    console.log(credentialResponse)
+                    navigate("/dashboard")
+                }}
+                onError={() => console.log("Login Failed")}
+                auto_select={true}>
+            </GoogleLogin>
 
         </div>
     );
