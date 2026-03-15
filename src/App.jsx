@@ -6,18 +6,18 @@ import {useEffect, useState} from "react";
 
 export default function App()  {
 
-    const [token,setToken] = useState(false)
-
-    if(token){
-        sessionStorage.setItem('token',JSON.stringify(token))
-    }
+    const [token, setToken] = useState(() => {
+        const stored = sessionStorage.getItem('token')
+        return stored ? JSON.parse(stored) : false
+    })
 
     useEffect(() => {
-        if(sessionStorage.getItem('token')){
-            let data = JSON.parse(sessionStorage.getItem('token'))
-            setToken(data)
+        if (token) {
+            sessionStorage.setItem('token', JSON.stringify(token))
+        } else {
+            sessionStorage.removeItem('token')
         }
-    }, [])
+    }, [token])
 
     return (
         <BrowserRouter>

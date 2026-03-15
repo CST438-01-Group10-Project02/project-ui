@@ -10,12 +10,16 @@ type Props = {
 const SignIn = ({ setToken }: Props) => {
     const navigate = useNavigate();
 
+    /*
     const handleSignIn = (username: string, password: string) => {
         console.log("Sign In:", username, password);
         // Call API here
         navigate("/dashboard");
+        <UsernamePasswordIn onSubmit={handleSignUp} submitLabel="Sign Up"/>
 
     };
+    */
+
 
     const handleSignUp = () => {
         console.log("Sign Up");
@@ -61,7 +65,6 @@ const SignIn = ({ setToken }: Props) => {
     return (
         <div>
             <h2>Login</h2>
-
             <form onSubmit={handleSubmit}>
                 <input
                     placeholder='Email'
@@ -83,7 +86,7 @@ const SignIn = ({ setToken }: Props) => {
 
             Don't have an account? <a href="/Sign-up">Sign up</a>
 
-            <UsernamePasswordIn onSubmit={handleSignUp} submitLabel="Sign Up"/>
+
 
         </div>
     );

@@ -8,11 +8,15 @@ const SignUp: FC = () => {
     const navigate = useNavigate();
 
 
+    /*
     const handleSignUp = (username: string, password: string) => {
         console.log("Sign Up:", username, password);
         // Call API here
         navigate("/sign-in");
     };
+    <UsernamePasswordIn onSubmit={handleSignUp} submitLabel="Sign Up"/>
+
+     */
 
 
     const [formData, setFormData] = useState({
@@ -83,8 +87,6 @@ const SignUp: FC = () => {
             </form>
 
             Already have an account? <a href="/Sign-in">Login</a>
-
-            <UsernamePasswordIn onSubmit={handleSignUp} submitLabel="Sign Up"/>
 
         </div>
     );
