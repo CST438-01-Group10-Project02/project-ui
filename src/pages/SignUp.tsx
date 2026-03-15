@@ -19,17 +19,20 @@ const SignUp: FC = () => {
      */
 
 
+    // Creates state variable formData
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: ''
     })
 
+    // Updates data while user types input
     function handleChange(event) {
         const value = event.target.value;
         setFormData({...formData, [event.target.name]: value});
     }
 
+    // Creates account using formData
     async function handleSubmit(e) {
         e.preventDefault()
 
@@ -53,6 +56,7 @@ const SignUp: FC = () => {
 
         alert('Check email for verification link')
 
+        // When account is created navigate to sign in page
         navigate("/sign-in");
     }
 

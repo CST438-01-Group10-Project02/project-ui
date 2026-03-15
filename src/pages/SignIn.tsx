@@ -20,23 +20,28 @@ const SignIn = ({ setToken }: Props) => {
     };
     */
 
-
+    /*
     const handleSignUp = () => {
         console.log("Sign Up");
         navigate("/sign-up");
     }
 
+     */
+
+    // Adds state variable called formData
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     })
 
+
+    // Updates components states when user types input
     function handleChange(event) {
         const value = event.target.value;
         setFormData({...formData, [event.target.name]: value});
     }
 
-
+    // Signs user in with valid credentials
     async function handleSubmit(e) {
         e.preventDefault()
 
@@ -45,6 +50,7 @@ const SignIn = ({ setToken }: Props) => {
             password: formData.password,
         })
 
+        // Logs signup data and possible errors
         console.log('signup data:', data)
         console.log('signup error:', error)
 
@@ -53,14 +59,11 @@ const SignIn = ({ setToken }: Props) => {
             return
         }
 
-        //alert('Check email for verification link')
-
         setToken(data)
         navigate("/dashboard");
     }
 
     console.log(formData)
-
 
     return (
         <div>
@@ -85,8 +88,6 @@ const SignIn = ({ setToken }: Props) => {
             </form>
 
             Don't have an account? <a href="/Sign-up">Sign up</a>
-
-
 
         </div>
     );
