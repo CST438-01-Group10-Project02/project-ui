@@ -5,7 +5,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     navigate("/sign-in");
   };
 
