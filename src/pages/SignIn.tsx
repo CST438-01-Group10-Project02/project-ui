@@ -1,98 +1,91 @@
-import {FC, useState} from "react";
-import UsernamePasswordIn from "./components/UsernamePasswordIn";
-import {useNavigate} from "react-router-dom";
-import {supabaseClient} from "../supabaseClient.js";
-import {GoogleLogin, googleLogout, GoogleOAuthProvider} from "@react-oauth/google";
+import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabaseClient } from "../supabaseClient";
+import { GoogleLogin } from "@react-oauth/google";
 
 type Props = {
-    setToken: (token: any) => void
-}
+    setToken: (token: any) => void;
+};
 
-const clientId = "529973095137-jfvc9lte49et6cnufi7agse38knom8bq.apps.googleusercontent.com";
-
-function onSuccess() {
-
-}
-
-const SignIn = ({setToken}: Props) => {
+const SignIn = ({ setToken }: Props) => {
     const navigate = useNavigate();
 
-    // Adds state variable called formData
     const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    })
+        email: "",
+        password: "",
+    });
 
-
-    // Updates components states when user types input
-    function handleChange(event) {
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
-        setFormData({...formData, [event.target.name]: value});
+        setFormData({ ...formData, [event.target.name]: value });
     }
 
-    // Signs user in with valid credentials
-    async function handleSubmit(e) {
-        e.preventDefault()
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
 
-        const {data, error} = await supabaseClient.auth.signInWithPassword({
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
             email: formData.email,
             password: formData.password,
-        })
-
-        // Logs signup data and possible errors
-        console.log('signup data:', data)
-        console.log('signup error:', error)
+        });
 
         if (error) {
-            alert(error.message)
-            return
+            alert(error.message);
+            return;
         }
 
-        setToken(data)
+        setToken(data);
         navigate("/dashboard");
     }
 
-    console.log(formData)
+    async function handleGoogleSuccess(credentialResponse: any) {
+        if (!credentialResponse.credential) {
+            alert("No Google credential returned");
+            return;
+        }
 
-    function handleLogout(){
-        googleLogout()
+        const { data, error } = await supabaseClient.auth.signInWithIdToken({
+            provider: "google",
+            token: credentialResponse.credential,
+        });
+
+        if (error) {
+            alert(error.message);
+            return;
+        }
+
+        setToken(data);
+        navigate("/dashboard");
     }
 
     return (
         <div>
             <h2>Login</h2>
+
             <form onSubmit={handleSubmit}>
                 <input
-                    placeholder='Email'
-                    name='email'
+                    placeholder="Email"
+                    name="email"
                     onChange={handleChange}
-
-
                 />
                 <input
-                    placeholder='Password'
-                    name='password'
+                    placeholder="Password"
+                    name="password"
                     type="password"
                     onChange={handleChange}
                 />
-
-                <button type="submit">
-                    Submit
-                </button>
-
+                <button type="submit">Submit</button>
             </form>
 
-            Don't have an account? <a href="/Sign-up">Sign up</a>
+            <p>
+                Don't have an account? <a href="/Sign-up">Sign up</a>
+            </p>
 
             <GoogleLogin
-                onSuccess={credentialResponse => {
-                    console.log(credentialResponse)
-                    navigate("/dashboard")
+                onSuccess={handleGoogleSuccess}
+                onError={() => {
+                    alert("Google login failed");
                 }}
-                onError={() => console.log("Login Failed")}
-                auto_select={true}>
-            </GoogleLogin>
-
+            />
         </div>
     );
 };
