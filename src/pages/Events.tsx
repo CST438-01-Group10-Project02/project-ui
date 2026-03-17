@@ -10,10 +10,10 @@ interface Event {
 
 export default function FC() {
     const [numberEvents, setNumberEvents] = useState(0);
-
+    const URL = "https://project-api-r7ox.onrender.com/events";
     useEffect(() => {
         const fetchData = async() => {
-            const result = await fetch("http://localhost:8080/events");
+            const result = await fetch(URL);
             result.json().then(json => {
                 setNumberEvents(json.length);
             })
