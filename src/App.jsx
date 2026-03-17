@@ -5,6 +5,7 @@ import SignUp from "./pages/SignUp.tsx";
 import Events from "./pages/Events.tsx";
 import EventPage from "./pages/components/EventPage.tsx";
 import {useEffect, useState} from "react";
+import CreateEvent from "./pages/CreateEvent.tsx";
 
 export default function App()  {
 
@@ -30,6 +31,7 @@ export default function App()  {
                 <Route path="/sign-up" element={<SignUp/>}/>
                 <Route path="/events" element={<Events/>}/>
                 <Route path="/events/:id" element={<EventPage/>}/>
+                <Route path="/events/create/:id" element={<CreateEvent/>}/>
                 {token?<Route path="/dashboard" element={<Dashboard/>}/>:""}
             </Routes>
         </BrowserRouter>

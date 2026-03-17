@@ -31,8 +31,9 @@ function getData(index : number) {
 export default function CreateEvent() {
     const {id} = useParams();
 
-    if(!id)
-        return;
+    if (!id) {
+        return <div>Missing event id</div>;
+    }
 
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -62,22 +63,32 @@ export default function CreateEvent() {
                     justifyItems:"center",
                     padding:"20px"
                 }}>
-                <label>Title</label>
-                <input
-                    style={{gridColumn:"2"}}
-                    type="title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
-                <label>Description</label>
-                <input
-                    style={{gridColumn:"2"}}
-                    type="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                />
+                <div
+                    style={{gridColumn:"1",
+                        display:"flex",
+                        alignItems:"center",
+                        gap:"5px"}}>
+                    <label>Title:</label>
+                    <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        required
+                    />
+                </div>
+                <div
+                    style={{gridColumn:"3",
+                        display:"flex",
+                        alignItems:"center",
+                        gap:"5px"}}>
+                    <label>Description:</label>
+                    <input
+                        type="text"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                    />
+                </div>
 
                 <div
                     style={{gridColumn:"1",
@@ -91,9 +102,9 @@ export default function CreateEvent() {
                         display:"flex",
                         alignItems:"center",
                         gap:"5px"}}>
-                    <label>Location</label>
+                    <label>Location:</label>
                     <input
-                        type="location"
+                        type="text"
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
                         required
@@ -104,9 +115,9 @@ export default function CreateEvent() {
                         display:"flex",
                         alignItems:"center",
                         gap:"5px"}}>
-                    <label>Start Time</label>
+                    <label>Start Time:</label>
                     <input
-                        type="sTime"
+                        type="time"
                         value={sTime}
                         onChange={(e) => setSTime(e.target.value)}
                         required
@@ -117,9 +128,9 @@ export default function CreateEvent() {
                         display:"flex",
                         alignItems:"center",
                         gap:"5px"}}>
-                    <label>End Time</label>
+                    <label>End Time:</label>
                     <input
-                        type="eTime"
+                        type="time"
                         value={eTime}
                         onChange={(e) => setETime(e.target.value)}
                         required
@@ -130,7 +141,7 @@ export default function CreateEvent() {
                         display:"flex",
                         alignItems:"center",
                         gap:"5px"}}>
-                    <label>Date</label>
+                    <label>Date:</label>
                     <input
                         type="date"
                         value={date}
