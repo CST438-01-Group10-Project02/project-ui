@@ -2,12 +2,6 @@ import { useNavigate } from "react-router-dom";
 import EventCard from "./components/EventCard"
 import {useState, useEffect, useEffectEvent} from "react";
 
-interface Event {
-    Title: string;
-    Description: string;
-    HostUsername: string;
-}
-
 export default function FC() {
     const [numberEvents, setNumberEvents] = useState(0);
 

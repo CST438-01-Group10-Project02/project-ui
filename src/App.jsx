@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import SignIn from "./pages/SignIn.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import Events from "./pages/Events.tsx";
+import EventPage from "./pages/components/EventPage.tsx";
 import {useEffect, useState} from "react";
 
 export default function App()  {
@@ -28,6 +29,7 @@ export default function App()  {
                 <Route path="/sign-in" element={<SignIn setToken={setToken}/>}/>
                 <Route path="/sign-up" element={<SignUp/>}/>
                 <Route path="/events" element={<Events/>}/>
+                <Route path="/events/:id" element={<EventPage/>}/>
                 {token?<Route path="/dashboard" element={<Dashboard/>}/>:""}
             </Routes>
         </BrowserRouter>
