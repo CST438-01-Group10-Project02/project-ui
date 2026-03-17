@@ -51,34 +51,37 @@ const SignUp: FC = () => {
     console.log(formData)
 
     return (
-        <div>
-            <h2>Sign Up</h2>
+        <div className={"login-container"}>
 
-            <form onSubmit={handleSubmit}>
-                <input
+            <form onSubmit={handleSubmit} className={"login-form"}>
+                <h2 className={"login-title"}>Sign Up</h2>
+                <input className={"login-inputs"}
                     placeholder='Username'
                     name='username'
                     onChange={handleChange}
                 />
-                <input
+                <input className={"login-inputs"}
                     placeholder='Email'
                     name='email'
                     onChange={handleChange}
 
                 />
-                <input
+                <input className={"login-inputs"}
                     placeholder='Password'
                     name='password'
                     type="password"
                     onChange={handleChange}
                 />
 
-                <button type="submit">
+                <button type="submit" className={"login-button"}>
                     Submit
                 </button>
-            </form>
 
-            Already have an account? <a href="/Sign-in">Login</a>
+                <p className="singIn">
+                Already have an account? <a href="/Sign-in">Login</a>
+                </p>
+
+            </form>
 
         </div>
     );
