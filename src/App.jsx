@@ -2,6 +2,7 @@ import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import SignIn from "./pages/SignIn.tsx";
 import SignUp from "./pages/SignUp.tsx";
+import Events from "./pages/Events.tsx";
 import {useEffect, useState} from "react";
 
 export default function App()  {
@@ -26,6 +27,7 @@ export default function App()  {
                 <Route path="/" element={<Navigate to="/sign-in" replace/>}/>
                 <Route path="/sign-in" element={<SignIn setToken={setToken}/>}/>
                 <Route path="/sign-up" element={<SignUp/>}/>
+                <Route path="/events" element={<Events/>}/>
                 {token?<Route path="/dashboard" element={<Dashboard/>}/>:""}
             </Routes>
         </BrowserRouter>
