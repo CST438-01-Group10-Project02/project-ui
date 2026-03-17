@@ -12,10 +12,11 @@ interface Event {
 }
 
 function getData(index : number) {
+    const URL = "https://project-api-r7ox.onrender.com/events/";
     const [event, setEvent] = useState<Event>({Title:"Loading...", Description:"Loading...", HostUsername:"Loading..."});
     useEffect(() => {
         const fetchData = async() => {
-            const result = await fetch("http://localhost:8080/events/"+index);
+            const result = await fetch(URL+index);
             result.json().then(json => {
                     setEvent({Title:json.name, Description:json.description, HostUsername:json.host.username});
             })
