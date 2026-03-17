@@ -1,20 +1,38 @@
-import {FC, SyntheticEvent, useState} from "react";
+import {FC, SyntheticEvent, useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
-    Title: string | undefined;
-    Description: string;
-    HostUsername: string;
     Id: number;
 }
 
-const EventCard : FC<Props> = ({Title, Description, HostUsername, Id}) => {
+interface Event {
+    Title: string;
+    Description: string;
+    HostUsername: string;
+}
+
+function getData(index : number) {
+    const [event, setEvent] = useState<Event>({Title:"Loading...", Description:"Loading...", HostUsername:"Loading..."});
+    useEffect(() => {
+        const fetchData = async() => {
+            const result = await fetch("http://localhost:8080/events/"+index);
+            result.json().then(json => {
+                    setEvent({Title:json.name, Description:json.description, HostUsername:json.host.username});
+            })
+        }
+        fetchData();
+    }, [])
+    return event;
+}
+
+const EventCard : FC<Props> = ({Id}) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        Id++;
         navigate("/events/" + Id);
     }
+
+    const event = getData(Id);
 
     return (
         <div className="event_card"
@@ -31,9 +49,9 @@ const EventCard : FC<Props> = ({Title, Description, HostUsername, Id}) => {
             cursor:"pointer"
         }}
         onClick={handleClick}>
-            <h1>{Title}</h1>
-            <h3>{Description}</h3>
-            <div style={{display:"flex", alignItems:"center", gap:"5px"}}><h3>Host:</h3><a>{HostUsername}</a></div>
+            <h1>{event.Title}</h1>
+            <h3>{event.Description}</h3>
+            <div style={{display:"flex", alignItems:"center", gap:"5px"}}><h3>Host:</h3><a>{event.HostUsername}</a></div>
         </div>
     );
 }
