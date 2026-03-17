@@ -51,34 +51,37 @@ const SignUp: FC = () => {
     console.log(formData)
 
     return (
-        <div className={"login-container"}>
+        <div className={"signup-container"}>
 
-            <form onSubmit={handleSubmit} className={"login-form"}>
-                <h2 className={"login-title"}>Sign Up</h2>
-                <input className={"login-inputs"}
+            <form onSubmit={handleSubmit} className={"signup-form"}>
+                <h2 className={"signup-title"}>Create Account</h2>
+
+
+
+                <input className={"signup-inputs"}
                     placeholder='Username'
                     name='username'
                     onChange={handleChange}
                 />
-                <input className={"login-inputs"}
+                <input className={"signup-inputs"}
                     placeholder='Email'
                     name='email'
                     onChange={handleChange}
 
                 />
-                <input className={"login-inputs"}
+                <input className={"signup-inputs"}
                     placeholder='Password'
                     name='password'
                     type="password"
                     onChange={handleChange}
                 />
 
-                <button type="submit" className={"login-button"}>
+                <button type="submit" className={"signup-button"}>
                     Submit
                 </button>
 
                 <p className="singIn">
-                Already have an account? <a href="/Sign-in">Login</a>
+                    Already have an account? <a href="/Sign-in">Login</a>
                 </p>
 
             </form>
