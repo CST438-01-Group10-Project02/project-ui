@@ -1,23 +1,11 @@
 import {FC, useState} from "react";
-import UsernamePasswordIn from "./components/UsernamePasswordIn";
 import {useNavigate} from "react-router-dom";
 import {supabaseClient} from "../supabaseClient.js";
+import"./SignUp.css"
 
 
 const SignUp: FC = () => {
     const navigate = useNavigate();
-
-
-    /*
-    const handleSignUp = (username: string, password: string) => {
-        console.log("Sign Up:", username, password);
-        // Call API here
-        navigate("/sign-in");
-    };
-    <UsernamePasswordIn onSubmit={handleSignUp} submitLabel="Sign Up"/>
-
-     */
-
 
     // Creates state variable formData
     const [formData, setFormData] = useState({
