@@ -147,7 +147,7 @@ export default function Dashboard() {
             title="Create Event"
             description="Set up a brand new event and start inviting attendees."
             buttonText="Create Now"
-            to="/events/create/:id"
+            to="/events/create/"
           />
 
           <DashboardCard

@@ -31,7 +31,7 @@ export default function App()  {
                 <Route path="/sign-up" element={<SignUp/>}/>
                 <Route path="/events" element={<Events/>}/>
                 <Route path="/events/:id" element={<EventPage/>}/>
-                <Route path="/events/create/:id" element={<CreateEvent/>}/>
+                <Route path="/events/create/" element={<CreateEvent/>}/>
                 {token?<Route path="/dashboard" element={<Dashboard/>}/>:""}
             </Routes>
         </BrowserRouter>
