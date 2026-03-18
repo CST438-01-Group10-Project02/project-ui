@@ -24,6 +24,7 @@ export default function CreateEvent() {
 
         const newEvent = {
             name: title,
+            host: username,
             description: description,
             location: location,
             startTime: sTime,
