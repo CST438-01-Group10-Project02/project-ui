@@ -1,39 +1,15 @@
-import {FC, SyntheticEvent, useEffect, useState} from "react";
-import { useParams } from "react-router-dom";
-
-interface Event {
-    Title: string;
-    Description: string;
-    HostUsername: string;
-    HostId: number;
-    Location: string;
-    StartTime: string;
-    EndTime: string;
-    Date: string;
-}
-
-function getData(index : number) {
-    const [event, setEvent] = useState<Event>({Title:"Loading...", Description:"Loading...", HostUsername:"Loading...", HostId:0, Location:"Loading", StartTime:"Loading", EndTime:"Loading", Date:"Loading"});
-    const URL = "https://project-api-r7ox.onrender.com/events/";
-    useEffect(() => {
-        const fetchData = async() => {
-            const result = await fetch(URL+index);
-            result.json().then(json => {
-                setEvent({Title:json.name, Description:json.description, HostUsername:json.host.username, HostId:json.host.id, Location:json.location, StartTime:json.startTime, EndTime:json.endTime, Date:json.date});
-            })
-        }
-        fetchData();
-    }, [])
-    return event;
-}
-
+import { SyntheticEvent, useState } from "react";
 
 export default function CreateEvent() {
-    const {id} = useParams();
+    const token = sessionStorage.getItem("token");
+    const user = parseJwt(token);
 
-    if (!id) {
-        return <div>Missing event id</div>;
-    }
+    console.log("resolved token:", token);
+    console.log("decoded user:", user);
+
+    const username =
+        user?.user_metadata?.username ??
+        "Unknown";
 
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -41,12 +17,48 @@ export default function CreateEvent() {
     const [sTime, setSTime] = useState<string>("");
     const [eTime, setETime] = useState<string>("");
     const [date, setDate] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
 
-    const event = getData(parseInt(id));
-
-    const handleSubmit = (e: SyntheticEvent) => {
+    const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
+        const newEvent = {
+            name: title,
+            description: description,
+            location: location,
+            startTime: sTime,
+            endTime: eTime,
+            date: date
+        };
+
+        try {
+            const response = await fetch("https://project-api-r7ox.onrender.com/events", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(newEvent)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+            }
+
+            const createdEvent = await response.json();
+            console.log("Created event:", createdEvent);
+            setMessage("Event created successfully!");
+
+            setTitle("");
+            setDescription("");
+            setLocation("");
+            setSTime("");
+            setETime("");
+            setDate("");
+        } catch (error) {
+            console.error("Error creating event:", error);
+            setMessage("Failed to create event.");
+        }
     };
 
     return (
@@ -95,7 +107,7 @@ export default function CreateEvent() {
                         display:"flex",
                         alignItems:"center",
                         gap:"5px"}}>
-                    <h2>Host:</h2><a>{event.HostUsername}</a>
+                    <h2>Host:</h2><a>{username}</a>
                 </div>
                 <div
                     style={{gridColumn:"3",
@@ -159,4 +171,23 @@ export default function CreateEvent() {
         </div>
         </form>
     )
+}
+
+function parseJwt(token: string | null) {
+    if (!token) {
+        return null;
+    }
+
+    try {
+        const payload = token.split(".")[1];
+        const base64 = payload
+            .replace(/-/g, "+")
+            .replace(/_/g, "/")
+            .padEnd(Math.ceil(payload.length / 4) * 4, "=");
+
+        return JSON.parse(atob(base64));
+    } catch (error) {
+        console.error("Failed to parse token:", error);
+        return null;
+    }
 }
