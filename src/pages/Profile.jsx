@@ -1,6 +1,9 @@
 import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
+  const navigate = useNavigate();
+
   const user = useMemo(() => {
     try {
       const token = JSON.parse(sessionStorage.getItem("token"));
@@ -92,6 +95,10 @@ export default function Profile() {
           </div>
 
           <button
+            onClick={() => {
+              console.log("button clicked");
+              navigate("/profile/edit");
+            }}
             style={{
               backgroundColor: "#2563eb",
               color: "white",
