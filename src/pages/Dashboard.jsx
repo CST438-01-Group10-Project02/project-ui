@@ -24,6 +24,7 @@ function postUser() {
     }
     postData();
   }, [])
+  return username;
 }
 
 function getUserUsername() {
@@ -43,6 +44,8 @@ function getUserUsername() {
         }
         fetchData();
     }, [])
+    if(!username)
+      username = postUser();
     return username;
 }
 
@@ -55,10 +58,7 @@ export default function Dashboard() {
   };
 
   const username = getUserUsername();
-  if(!username)
-  {
-    postUser();
-  }
+  console.log(username);
 
   return (
     <div

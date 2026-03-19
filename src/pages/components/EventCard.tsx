@@ -8,17 +8,37 @@ interface Props {
 interface Event {
     Title: string;
     Description: string;
-    HostUsername: string;
+    HostId: number;
+}
+
+function getUsername(id : number){
+    // const URL = "https://project-api-r7ox.onrender.com/users/" + id;
+    const URL = "http://localhost:8080/users/" + id;
+    const [username, setUsername] = useState("Loading...");
+    useEffect(() => {
+        const fetchData = async() => {
+            const result = await fetch(URL);
+            if(!result.ok) {
+                return "NULL";
+            }
+            result.json().then(json => {
+                setUsername(json.username);
+            })
+        }
+        fetchData();
+    })
+    return username;
 }
 
 function getData(index : number) {
-    const URL = "https://project-api-r7ox.onrender.com/events/";
-    const [event, setEvent] = useState<Event>({Title:"Loading...", Description:"Loading...", HostUsername:"Loading..."});
+    // const URL = "https://project-api-r7ox.onrender.com/events/";
+    const URL = "http://localhost:8080/events/";
+    const [event, setEvent] = useState<Event>({Title:"Loading...", Description:"Loading...", HostId:0});
     useEffect(() => {
         const fetchData = async() => {
             const result = await fetch(URL+index);
             result.json().then(json => {
-                    setEvent({Title:json.name, Description:json.description, HostUsername:json.host.username});
+                    setEvent({Title:json.name, Description:json.description, HostId:json.hostId});
             })
         }
         fetchData();
@@ -34,6 +54,7 @@ const EventCard : FC<Props> = ({Id}) => {
     }
 
     const event = getData(Id);
+    const username = getUsername(event.HostId);
 
     return (
         <div className="event_card"
@@ -52,7 +73,7 @@ const EventCard : FC<Props> = ({Id}) => {
         onClick={handleClick}>
             <h1>{event.Title}</h1>
             <h3>{event.Description}</h3>
-            <div style={{display:"flex", alignItems:"center", gap:"5px"}}><h3>Host:</h3><a>{event.HostUsername}</a></div>
+            <div style={{display:"flex", alignItems:"center", gap:"5px"}}><h3>Host:</h3><a>{username}</a></div>
         </div>
     );
 }
