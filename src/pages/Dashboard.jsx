@@ -10,7 +10,8 @@ function postUser() {
   const email = tokenJSON.user.email;
   const username = tokenJSON.user.user_metadata.full_name.replaceAll(' ', '_');
   
-  const URL = "http://localhost:8080/users";
+  // const URL = "http://localhost:8080/users";
+  const URL = "https://project-api-r7ox.onrender.com/users";
   useEffect(() => {
     const postData = async() => {
       await fetch(URL, {
@@ -34,7 +35,8 @@ function getUserUsername() {
     const tokenJSON = JSON.parse(token);
     const email = tokenJSON.user.email;
     var username;
-    const URL = "http://localhost:8080/users?email="+email;
+    // const URL = "http://localhost:8080/users?email="+email;
+    const URL = "https://project-api-r7ox.onrender.com/users?email="+email;
     useEffect(() => {
         const fetchData = async() => {
             const result = await fetch(URL);

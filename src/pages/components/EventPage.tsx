@@ -13,8 +13,8 @@ interface Event {
 
 function getData(index : number) {
     const [event, setEvent] = useState<Event>({Title:"Loading...", Description:"Loading...", HostId:0, Location:"Loading", StartTime:"Loading", EndTime:"Loading", Date:"Loading"});
-    // const URL = "https://project-api-r7ox.onrender.com/events/";
-    const URL = "http://localhost:8080/events/";
+    const URL = "https://project-api-r7ox.onrender.com/events/";
+    // const URL = "http://localhost:8080/events/";
     useEffect(() => {
         const fetchData = async() => {
             const result = await fetch(URL+index);
@@ -28,8 +28,8 @@ function getData(index : number) {
 }
 
 function getUsername(id : number){
-    // const URL = "https://project-api-r7ox.onrender.com/users/" + id;
-    const URL = "http://localhost:8080/users/" + id;
+    const URL = "https://project-api-r7ox.onrender.com/users/" + id;
+    // const URL = "http://localhost:8080/users/" + id;
     const [username, setUsername] = useState("Loading...");
     useEffect(() => {
         const fetchData = async() => {
@@ -52,7 +52,8 @@ function getUserId() {
         return null;
     const tokenJSON = JSON.parse(token);
     const email = tokenJSON.user.email;
-    const URL = "http://localhost:8080/users?email="+email;
+    // const URL = "http://localhost:8080/users?email="+email;
+    const URL = "https://project-api-r7ox.onrender.com/users?email=" + email;
     const [id, setId] = useState(null);
     useEffect(() => {
         const fetchData = async() => {
@@ -103,16 +104,3 @@ export default function EventPage() {
         </div>
     )
 }
-
-/*
-.event_card
-{
-  background-color: gray;
-  border-radius: 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  justify-items: center;
-  align-items: center;
-  padding: 20px;
-}
-*/

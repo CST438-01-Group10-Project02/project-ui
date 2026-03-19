@@ -12,8 +12,8 @@ interface Event {
 }
 
 function getUsername(id : number){
-    // const URL = "https://project-api-r7ox.onrender.com/users/" + id;
-    const URL = "http://localhost:8080/users/" + id;
+    const URL = "https://project-api-r7ox.onrender.com/users/" + id;
+    // const URL = "http://localhost:8080/users/" + id;
     const [username, setUsername] = useState("Loading...");
     useEffect(() => {
         const fetchData = async() => {
@@ -31,8 +31,8 @@ function getUsername(id : number){
 }
 
 function getData(index : number) {
-    // const URL = "https://project-api-r7ox.onrender.com/events/";
-    const URL = "http://localhost:8080/events/";
+    const URL = "https://project-api-r7ox.onrender.com/events/";
+    // const URL = "http://localhost:8080/events/";
     const [event, setEvent] = useState<Event>({Title:"Loading...", Description:"Loading...", HostId:0});
     useEffect(() => {
         const fetchData = async() => {
