@@ -8,7 +8,11 @@ function postUser() {
     return "NULL";
   const tokenJSON = JSON.parse(token);
   const email = tokenJSON.user.email;
-  const username = tokenJSON.user.user_metadata.full_name.replaceAll(' ', '_');
+  var username;
+  if(tokenJSON.user.user_metadata.username)
+    username = tokenJSON.user.user_metadata.username;
+  else if(tokenJSON.user.user_metadata.full_name)
+    username = tokenJSON.user.user_metadata.full_name.replaceAll(' ', '_');
   
   // const URL = "http://localhost:8080/users";
   const URL = "https://project-api-r7ox.onrender.com/users";
@@ -200,7 +204,7 @@ export default function Dashboard() {
             title="Create Event"
             description="Set up a brand new event and start inviting attendees."
             buttonText="Create Now"
-            to="/events/create/"
+            to="/events/new"
           />
 
           <DashboardCard
