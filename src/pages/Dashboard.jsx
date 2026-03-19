@@ -1,5 +1,55 @@
 import { useNavigate, Link } from "react-router-dom";
 import background from "../assets/dashboard-bg.png";
+import { useEffect, useState } from "react";
+
+function postUser() {
+  const token = sessionStorage.getItem("token");
+  if(!token)
+    return "NULL";
+  const tokenJSON = JSON.parse(token);
+  const email = tokenJSON.user.email;
+  const username = tokenJSON.user.user_metadata.full_name.replaceAll(' ', '_');
+  
+  // const URL = "http://localhost:8080/users";
+  const URL = "https://project-api-r7ox.onrender.com/users";
+  useEffect(() => {
+    const postData = async() => {
+      await fetch(URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          username: username,
+          email: email
+        })
+      })
+    }
+    postData();
+  }, [])
+  return username;
+}
+
+function getUserUsername() {
+    const token = sessionStorage.getItem("token");
+    if(!token)
+        return "NULL";
+    const tokenJSON = JSON.parse(token);
+    const email = tokenJSON.user.email;
+    var username;
+    // const URL = "http://localhost:8080/users?email="+email;
+    const URL = "https://project-api-r7ox.onrender.com/users?email="+email;
+    useEffect(() => {
+        const fetchData = async() => {
+            const result = await fetch(URL);
+            result.json().then(json => {
+                username = json.username;
+            })
+        }
+        fetchData();
+    }, [])
+    if(!username)
+      username = postUser();
+    return username;
+}
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -8,6 +58,9 @@ export default function Dashboard() {
     sessionStorage.removeItem("token");
     navigate("/sign-in");
   };
+
+  const username = getUserUsername();
+  console.log(username);
 
   return (
     <div

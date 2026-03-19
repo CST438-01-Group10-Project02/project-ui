@@ -5,6 +5,7 @@ import {useState, useEffect, useEffectEvent} from "react";
 export default function FC() {
     const [numberEvents, setNumberEvents] = useState(0);
     const URL = "https://project-api-r7ox.onrender.com/events";
+    // const URL = "http://localhost:8080/events";
     useEffect(() => {
         const fetchData = async() => {
             const result = await fetch(URL);
