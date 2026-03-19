@@ -47,5 +47,15 @@
 }
 
 .singIn {
-    font-size:12px
+    font-size: 12px
+}
+
+.signup-body{
+    background-image: url("../assets/dashboard-bg.png");
+    background-color: #1e2124;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    margin:0;
 }

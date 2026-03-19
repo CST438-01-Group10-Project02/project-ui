@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabaseClient } from "../supabaseClient";
-import { GoogleLogin } from "@react-oauth/google";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {supabaseClient} from "../supabaseClient";
+import {GoogleLogin} from "@react-oauth/google";
 import "./SignIn.css"
 
 type Props = {
     setToken: (token: any) => void;
 };
 
-const SignIn = ({ setToken }: Props) => {
+const SignIn = ({setToken}: Props) => {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -18,13 +18,13 @@ const SignIn = ({ setToken }: Props) => {
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
-        setFormData({ ...formData, [event.target.name]: value });
+        setFormData({...formData, [event.target.name]: value});
     }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
+        const {data, error} = await supabaseClient.auth.signInWithPassword({
             email: formData.email,
             password: formData.password,
         });
@@ -44,9 +44,10 @@ const SignIn = ({ setToken }: Props) => {
             return;
         }
 
-        const { data, error } = await supabaseClient.auth.signInWithIdToken({
+        const {data, error} = await supabaseClient.auth.signInWithIdToken({
             provider: "google",
             token: credentialResponse.credential,
+
         });
 
         if (error) {
@@ -59,7 +60,7 @@ const SignIn = ({ setToken }: Props) => {
     }
 
     return (
-
+    <div className = "auth-body">
         <div className="auth-container">
             <form onSubmit={handleSubmit} className={"auth-form"}>
                 <h2 className={"auth-title"}>Login</h2>
@@ -82,12 +83,14 @@ const SignIn = ({ setToken }: Props) => {
                     <span>OR</span>
                 </p>
 
+
                 <GoogleLogin
                     onSuccess={handleGoogleSuccess}
                     onError={() => {
                         alert("Google login failed");
                     }}
                 />
+
 
                 <p className="createAccount">
                     Don't have an account? <a href="/Sign-up">Sign up</a>
@@ -96,7 +99,9 @@ const SignIn = ({ setToken }: Props) => {
 
 
         </div>
+    </div>
     );
+
 };
 
 export default SignIn;

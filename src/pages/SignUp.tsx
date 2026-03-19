@@ -1,7 +1,7 @@
 import {FC, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {supabaseClient} from "../supabaseClient.js";
-import"./SignUp.css"
+import "./SignUp.css"
 
 
 const SignUp: FC = () => {
@@ -24,7 +24,7 @@ const SignUp: FC = () => {
     async function handleSubmit(e) {
         e.preventDefault()
 
-        const { data, error } = await supabaseClient.auth.signUp({
+        const {data, error} = await supabaseClient.auth.signUp({
             email: formData.email,
             password: formData.password,
             options: {
@@ -50,42 +50,46 @@ const SignUp: FC = () => {
 
     console.log(formData)
 
+
     return (
-        <div className={"signup-container"}>
+        <div className="signup-body">
+            <div className={"signup-container"}>
 
-            <form onSubmit={handleSubmit} className={"signup-form"}>
-                <h2 className={"signup-title"}>Create Account</h2>
+                <form onSubmit={handleSubmit} className={"signup-form"}>
+                    <h2 className={"signup-title"}>Create Account</h2>
+                    <br></br>
 
+                    <input className={"signup-inputs"}
+                           placeholder='Username'
+                           name='username'
+                           onChange={handleChange}
+                    />
+                    <input className={"signup-inputs"}
+                           placeholder='Email'
+                           name='email'
+                           onChange={handleChange}
 
+                    />
+                    <input className={"signup-inputs"}
+                           placeholder='Password'
+                           name='password'
+                           type="password"
+                           onChange={handleChange}
+                    />
 
-                <input className={"signup-inputs"}
-                    placeholder='Username'
-                    name='username'
-                    onChange={handleChange}
-                />
-                <input className={"signup-inputs"}
-                    placeholder='Email'
-                    name='email'
-                    onChange={handleChange}
+                    <button type="submit" className={"signup-button"}>
+                        Submit
+                    </button>
 
-                />
-                <input className={"signup-inputs"}
-                    placeholder='Password'
-                    name='password'
-                    type="password"
-                    onChange={handleChange}
-                />
+                    <br></br>
 
-                <button type="submit" className={"signup-button"}>
-                    Submit
-                </button>
+                    <p className="singIn">
+                        Already have an account? <a href="/Sign-in">Login</a>
+                    </p>
 
-                <p className="singIn">
-                    Already have an account? <a href="/Sign-in">Login</a>
-                </p>
+                </form>
 
-            </form>
-
+            </div>
         </div>
     );
 };

@@ -4,13 +4,11 @@
     font-weight: bold;
 }
 
-.auth-container html,
-.auth-container body {
+.auth-container{
     height: 100%;
     margin: 0;
     padding: 0;
 }
-
 
 .auth-container form {
     background-color: white;
@@ -22,7 +20,7 @@
     gap: 10px;
 }
 
-body{
+.auth-body{
     background-image: url("../assets/dashboard-bg.png");
     background-repeat: no-repeat;
     background-position: center center;
@@ -33,10 +31,10 @@ body{
 .auth-container {
     display: flex;
     flex-direction: column;
-    align-items: center;   /* centers everything horizontally */
-    justify-content: center; /* centers vertically */
+    align-items: center;
+    justify-content: center;
     height: 100vh;
-    text-align: center;   /* centers the text */
+    text-align: center;
     gap: 12px;
 }
 
@@ -79,3 +77,4 @@ body{
     color: #555;
     font-size: 14px;
 }
+
