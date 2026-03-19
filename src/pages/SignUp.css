@@ -51,6 +51,7 @@
 }
 
 .signup-body{
+    /*Remove image if we are using blank background or a body image*/
     background-image: url("../assets/dashboard-bg.png");
     background-color: #1e2124;
     background-repeat: no-repeat;

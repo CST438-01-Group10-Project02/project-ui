@@ -21,6 +21,7 @@
 }
 
 .auth-body{
+    /*Remove image if we are using blank background or a body image*/
     background-image: url("../assets/dashboard-bg.png");
     background-repeat: no-repeat;
     background-position: center center;
