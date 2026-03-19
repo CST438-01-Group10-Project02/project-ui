@@ -4,9 +4,6 @@ export default function CreateEvent() {
     const token = sessionStorage.getItem("token");
     const user = parseJwt(token);
 
-    console.log("resolved token:", token);
-    console.log("decoded user:", user);
-
     const username =
         user?.user_metadata?.username ??
         "Unknown";
@@ -32,34 +29,34 @@ export default function CreateEvent() {
             date: date
         };
 
-        try {
-            const response = await fetch("https://project-api-r7ox.onrender.com/events", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify(newEvent)
-            });
-
-            if (!response.ok) {
-                throw new Error(`Server error: ${response.status}`);
-            }
-
-            const createdEvent = await response.json();
-            console.log("Created event:", createdEvent);
-            setMessage("Event created successfully!");
-
-            setTitle("");
-            setDescription("");
-            setLocation("");
-            setSTime("");
-            setETime("");
-            setDate("");
-        } catch (error) {
-            console.error("Error creating event:", error);
-            setMessage("Failed to create event.");
-        }
+        // try {
+        //     const response = await fetch("https://project-api-r7ox.onrender.com/events", {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             "Authorization": `Bearer ${token}`
+        //         },
+        //         body: JSON.stringify(newEvent)
+        //     });
+        //
+        //     if (!response.ok) {
+        //         throw new Error(`Server error: ${response.status}`);
+        //     }
+        //
+        //     const createdEvent = await response.json();
+        //     console.log("Created event:", createdEvent);
+        //     setMessage("Event created successfully!");
+        //
+        //     setTitle("");
+        //     setDescription("");
+        //     setLocation("");
+        //     setSTime("");
+        //     setETime("");
+        //     setDate("");
+        // } catch (error) {
+        //     console.error("Error creating event:", error);
+        //     setMessage("Failed to create event.");
+        // }
     };
 
     return (
