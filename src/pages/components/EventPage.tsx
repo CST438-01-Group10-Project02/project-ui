@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Background from "../../assets/dashboard-bg.png";
 
 interface Event {
     Title: string;
@@ -78,27 +79,39 @@ export default function EventPage() {
     if(event.HostId == getUserId()){
         alert("you are the owner of this event");
     }
+
+    const font_size = "2vw";
     return (
-        <div style={{width:"100vw", display:"flex", justifyContent:"center"}}>
+        <div style={{
+                width:"100vw",
+                height:"100vh",
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center",
+                backgroundImage:`url(${Background})`,
+                backgroundRepeat:"no-repeat",
+                backgroundSize:"cover"
+            }}>
             <div
             style={{
-                backgroundColor:"gray",
+                backgroundColor:"white",
                 borderRadius:"20px",
                 outline:"2px solid black",
-                height:"fit-content",
+                width:"70vw",
+                height:"70vh",
                 display:"grid",
                 gridTemplateColumns:"1fr 1fr 1fr",
                 justifyItems:"center",
                 padding:"20px"
             }}>
-            <h1 style={{gridColumn:"2"}}>{event.Title}</h1>
-            <h3 style={{gridColumn: "2"}}>{event.Description}</h3>
+            <h1 style={{gridColumn:"2", fontSize:"2.5vw"}}>{event.Title}</h1>
+            <h3 style={{gridColumn: "2", fontSize:font_size}}>{event.Description}</h3>
 
-            <div style={{gridColumn:"1", display:"flex", alignItems:"center", gap:"5px"}}><h2>Host:</h2><a href={"./../users/"+event.HostId}>{username}</a></div>
-            <div style={{gridColumn:"3", display:"flex", alignItems:"center", gap:"5px"}}><h2>Location:</h2><a>{event.Location}</a></div>
-            <div style={{gridColumn:"1", display:"flex", alignItems:"center", gap:"5px"}}><h2>Start Time:</h2><a>{event.StartTime}</a></div>
-            <div style={{gridColumn:"3", display:"flex", alignItems:"center", gap:"5px"}}><h2>End Time:</h2><a>{event.EndTime}</a></div>
-            <div style={{gridColumn:"2", display:"flex", alignItems:"center", gap:"5px"}}><h2>Date:</h2><a>{event.Date}</a></div>
+            <div style={{gridColumn:"1", display:"flex", alignItems:"center", gap:"1em"}}><h2 style={{fontSize:font_size}}>Host:</h2><a style={{fontSize:font_size}}>{username}</a></div>
+            <div style={{gridColumn:"3", display:"flex", alignItems:"center", gap:"1em"}}><h2 style={{fontSize:font_size}}>Location:</h2><a style={{fontSize:font_size}}>{event.Location}</a></div>
+            <div style={{gridColumn:"1", display:"flex", alignItems:"center", gap:"1em"}}><h2 style={{fontSize:font_size}}>Start Time:</h2><a style={{fontSize:font_size}}>{event.StartTime}</a></div>
+            <div style={{gridColumn:"3", display:"flex", alignItems:"center", gap:"1em"}}><h2 style={{fontSize:font_size}}>End Time:</h2><a style={{fontSize:font_size}}>{event.EndTime}</a></div>
+            <div style={{gridColumn:"2", display:"flex", alignItems:"center", gap:"1em"}}><h2 style={{fontSize:font_size}}>Date:</h2><a style={{fontSize:font_size}}>{event.Date}</a></div>
 
             </div>
         </div>

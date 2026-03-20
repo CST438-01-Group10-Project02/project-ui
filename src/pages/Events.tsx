@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import EventCard from "./components/EventCard"
 import {useState, useEffect, useEffectEvent} from "react";
+import Background from "../assets/dashboard-bg.png";
 
 export default function FC() {
     const [numberEvents, setNumberEvents] = useState(0);
@@ -17,14 +18,23 @@ export default function FC() {
     }, [])
 
     return (
-        <div style={{display:"flex", justifyContent:"center", alignContent:"center"}}>
-            <div style={{display:"grid", gridTemplateColumns:"auto auto", gap:"50px"}}>
-                {
-                    Array.from({length : numberEvents}, (_, k) => (
-                        <EventCard Id={k+1}></EventCard>
-                    ))
-                }
-            </div>
+        <div style=
+        {{
+            display:"flex",
+            height:"100vh",
+            flexDirection:"column",
+            gap:"25px",
+            justifyContent:"center",
+            alignItems:"center",
+            backgroundImage:`url(${Background})`,
+            backgroundRepeat:"no-repeat",
+            backgroundSize:"cover"
+        }}>
+            {
+                Array.from({length : numberEvents}, (_, k) => (
+                    <EventCard Id={k+1}></EventCard>
+                ))
+            }
         </div>
     );
 }

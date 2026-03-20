@@ -56,11 +56,14 @@ const EventCard : FC<Props> = ({Id}) => {
     const event = getData(Id);
     const username = getUsername(event.HostId);
 
+    var font_size = "1.5vw";
+
     return (
         <div className="event_card"
         style={{
-            width:"fit-content",
-            backgroundColor:"gray",
+            width:"30vw",
+            height:"15vw",
+            backgroundColor:"white",
             borderRadius:"20px",
             outline:"2px solid black",
             display:"flex",
@@ -71,9 +74,9 @@ const EventCard : FC<Props> = ({Id}) => {
             cursor:"pointer"
         }}
         onClick={handleClick}>
-            <h1>{event.Title}</h1>
-            <h3>{event.Description}</h3>
-            <div style={{display:"flex", alignItems:"center", gap:"5px"}}><h3>Host:</h3><a>{username}</a></div>
+            <h1 style={{fontSize:"2vw"}}>{event.Title}</h1>
+            <h3 style={{fontSize:font_size}}>{event.Description}</h3>
+            <div style={{display:"flex", alignItems:"center", gap:"5px"}}><h3 style={{fontSize:font_size}}>Host:</h3><a style={{fontSize:font_size}}>{username}</a></div>
         </div>
     );
 }
