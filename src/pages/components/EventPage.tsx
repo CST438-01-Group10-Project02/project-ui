@@ -76,7 +76,7 @@ export default function EventPage() {
     const event = getData(parseInt(id));
     const username = getUsername(event.HostId);
     if(event.HostId == getUserId()){
-        alert("you are the owner of this event");
+        //alert("you are the owner of this event");
     }
     return (
         <div style={{width:"100vw", display:"flex", justifyContent:"center"}}>

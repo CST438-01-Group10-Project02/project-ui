@@ -1,12 +1,12 @@
-import { SyntheticEvent, useState } from "react";
+import {SyntheticEvent, useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export default function CreateEvent() {
-    const token = sessionStorage.getItem("token");
-    const user = parseJwt(token);
+    const naviagte = useNavigate();
 
-    const username =
-        user?.user_metadata?.username ??
-        "Unknown";
+    const token = sessionStorage.getItem("token");
+    const username = getUserUsername();
+    const userID = getUserID();
 
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -21,7 +21,7 @@ export default function CreateEvent() {
 
         const newEvent = {
             name: title,
-            host: username,
+            hostId: userID,
             description: description,
             location: location,
             startTime: sTime,
@@ -29,34 +29,35 @@ export default function CreateEvent() {
             date: date
         };
 
-        // try {
-        //     const response = await fetch("https://project-api-r7ox.onrender.com/events", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             "Authorization": `Bearer ${token}`
-        //         },
-        //         body: JSON.stringify(newEvent)
-        //     });
-        //
-        //     if (!response.ok) {
-        //         throw new Error(`Server error: ${response.status}`);
-        //     }
-        //
-        //     const createdEvent = await response.json();
-        //     console.log("Created event:", createdEvent);
-        //     setMessage("Event created successfully!");
-        //
-        //     setTitle("");
-        //     setDescription("");
-        //     setLocation("");
-        //     setSTime("");
-        //     setETime("");
-        //     setDate("");
-        // } catch (error) {
-        //     console.error("Error creating event:", error);
-        //     setMessage("Failed to create event.");
-        // }
+        try {
+            //const response = await fetch("http://localhost:8080/events", {
+            const response = await fetch("https://project-api-r7ox.onrender.com/events", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newEvent)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+            }
+
+            const createdEvent = await response.json();
+            console.log("Created event:", createdEvent);
+            setMessage("Event created successfully!");
+
+            setTitle("");
+            setDescription("");
+            setLocation("");
+            setSTime("");
+            setETime("");
+            setDate("");
+            naviagte("/events/" + createdEvent.id);
+        } catch (error) {
+            console.error("Error creating event:", error);
+            setMessage("Failed to create event.");
+        }
     };
 
     return (
@@ -171,21 +172,47 @@ export default function CreateEvent() {
     )
 }
 
-function parseJwt(token: string | null) {
-    if (!token) {
-        return null;
-    }
+function getUserID() {
+    const token = sessionStorage.getItem("token");
+    if(!token)
+        return "NULL";
+    const tokenJSON = JSON.parse(token);
+    const email = tokenJSON.user.email;
+    const [id, setId] = useState("Loading...");
+    // const URL = "http://localhost:8080/users?email="+email;
+    const URL = "https://project-api-r7ox.onrender.com/users?email="+email;
+    useEffect(() => {
+        const fetchData = async() => {
+            const result = await fetch(URL);
+            result.json().then(json => {
+                setId(json.id);
+            })
+        }
+        fetchData();
+    }, [])
+    console.log(id);
 
-    try {
-        const payload = token.split(".")[1];
-        const base64 = payload
-            .replace(/-/g, "+")
-            .replace(/_/g, "/")
-            .padEnd(Math.ceil(payload.length / 4) * 4, "=");
+    return id;
+}
 
-        return JSON.parse(atob(base64));
-    } catch (error) {
-        console.error("Failed to parse token:", error);
-        return null;
-    }
+function getUserUsername() {
+    const token = sessionStorage.getItem("token");
+    if(!token)
+        return "NULL";
+    const tokenJSON = JSON.parse(token);
+    const email = tokenJSON.user.email;
+    const [username, setUsername] = useState("Loading...");
+    // const URL = "http://localhost:8080/users?email="+email;
+    const URL = "https://project-api-r7ox.onrender.com/users?email="+email;
+    useEffect(() => {
+        const fetchData = async() => {
+            const result = await fetch(URL);
+            result.json().then(json => {
+                setUsername(json.username);
+            })
+        }
+        fetchData();
+    }, [])
+
+    return username;
 }
