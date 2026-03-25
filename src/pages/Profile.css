@@ -1,0 +1,63 @@
+.profile-container {
+  padding: 20px;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.profile-name {
+  margin: 0;
+}
+
+.profile-email {
+  color: #666;
+  margin: 4px 0;
+}
+
+.profile-role {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.profile-bio-header {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: #666;
+  max-width: 400px;
+}
+
+.profile-section {
+  margin-top: 20px;
+}
+
+.profile-detail-row {
+  margin: 5px 0;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.profile-stat-card {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.profile-back-button {
+  margin-bottom: 15px;
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.profile-back-button:hover {
+  text-decoration: underline;
+}
