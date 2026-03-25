@@ -1,199 +1,127 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabaseClient } from "../supabaseClient.js";
+import "./Profile.css";
+
+const API_BASE = "http://localhost:8080";
 
 export default function Profile() {
   const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
+  const [stats, setStats] = useState([
+    { label: "Events Created", value: 0 },
+    { label: "Events Joined", value: 0 },
+    { label: "Upcoming Events", value: 0 },
+  ]);
 
+  useEffect(() => {
+    async function loadProfile() {
+      const { data, error } = await supabaseClient.auth.getUser();
 
+      if (error) {
+        console.error(error);
+        return;
+      }
 
-  const user = useMemo(() => {
-    try {
-      const token = JSON.parse(sessionStorage.getItem("token"));
+      const user = data?.user;
 
-      return {
-          name: token?.user.user_metadata.username || "Tanner Butler",
-          email: token?.user.user_metadata.email || "tanner@example.com",
-          role: token?.role || "Event Manager User",
+      const currentProfile = {
+        name: user?.user_metadata?.username || "User",
+        email: user?.email || "No email found",
+        role: user?.user_metadata?.role || "Event Manager User",
+        bio: user?.user_metadata?.bio || "No bio added yet.",
+        hostId: Number(user?.user_metadata?.hostId) || null,
       };
-    } catch {
-      return {
-        name: "Tanner Butler",
-        email: "tanner@example.com",
-        role: "Event Manager User",
-      };
+
+      setProfile(currentProfile);
+
+      if (!currentProfile.hostId) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/events?hostId=${currentProfile.hostId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch events");
+        }
+
+        const createdEvents = await response.json();
+
+        const now = new Date();
+
+        const upcomingEvents = createdEvents.filter((event) => {
+          if (!event.date) return false;
+          return new Date(event.date) > now;
+        });
+
+        setStats([
+          { label: "Events Created", value: createdEvents.length },
+          { label: "Events Joined", value: 0 },
+          { label: "Upcoming Events", value: upcomingEvents.length },
+        ]);
+      } catch (err) {
+        console.error("Error loading event stats:", err);
+      }
     }
+
+    loadProfile();
   }, []);
 
-  const stats = [
-    { label: "Events Created", value: 12 },
-    { label: "Events Joined", value: 28 },
-    { label: "Upcoming Events", value: 5 },
-  ];
+  if (!profile) {
+    return <div className="profile-container">Loading...</div>;
+  }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background:
-          "linear-gradient(135deg, rgb(248, 250, 252), rgb(226, 232, 240))",
-        padding: "40px 20px",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "900px",
-          margin: "0 auto",
-          display: "grid",
-          gap: "24px",
-        }}
+    <div className="profile-container">
+      <button
+        className="profile-back-button"
+        onClick={() => navigate(-1)}
       >
-        <div
-          style={{
-            backgroundColor: "white",
-            borderRadius: "20px",
-            padding: "32px",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-            display: "flex",
-            alignItems: "center",
-            gap: "24px",
-            flexWrap: "wrap",
-          }}
-        >
-          <div
-            style={{
-              width: "100px",
-              height: "100px",
-              borderRadius: "50%",
-              background:
-                "linear-gradient(135deg, rgb(59, 130, 246), rgb(99, 102, 241))",
-              color: "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "36px",
-              fontWeight: "bold",
-            }}
-          >
-            {user.name.charAt(0)}
-          </div>
+        ← Back
+      </button>
 
-          <div style={{ flex: 1 }}>
-            <h1
-              style={{
-                margin: "0 0 8px 0",
-                fontSize: "32px",
-                color: "#1e293b",
-              }}
-            >
-              {user.name}
-            </h1>
-            <p style={{ margin: "0 0 6px 0", color: "#475569", fontSize: "16px" }}>
-              {user.email}
-            </p>
-            <p style={{ margin: 0, color: "#64748b", fontSize: "15px" }}>
-              {user.role}
-            </p>
-          </div>
+      <div className="profile-header">
+        <div className="profile-header-left">
+          <h1 className="profile-name">{profile.name}</h1>
+          <p className="profile-email">{profile.email}</p>
+          <p className="profile-role">{profile.role}</p>
+          <p className="profile-bio-header">{profile.bio}</p>
+        </div>
 
+        <div className="profile-header-right">
           <button
-            onClick={() => {
-              console.log("button clicked");
-              navigate("/profile/edit");
-            }}
-            style={{
-              backgroundColor: "#2563eb",
-              color: "white",
-              border: "none",
-              borderRadius: "10px",
-              padding: "12px 20px",
-              fontSize: "15px",
-              cursor: "pointer",
-            }}
+            className="profile-edit-button"
+            onClick={() => navigate("/profile/edit")}
           >
             Edit Profile
           </button>
         </div>
+      </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "20px",
-          }}
-        >
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              style={{
-                backgroundColor: "white",
-                borderRadius: "18px",
-                padding: "24px",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-              }}
-            >
-              <h2
-                style={{
-                  margin: "0 0 10px 0",
-                  fontSize: "15px",
-                  color: "#64748b",
-                  fontWeight: "normal",
-                }}
-              >
-                {stat.label}
-              </h2>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "32px",
-                  fontWeight: "bold",
-                  color: "#0f172a",
-                }}
-              >
-                {stat.value}
-              </p>
-            </div>
-          ))}
+      <div className="profile-section">
+        <h2 className="profile-section-title">Profile Details</h2>
+
+        <div className="profile-detail-row">
+          <span className="profile-detail-label">Full Name:</span>
+          <span className="profile-detail-value">{profile.name}</span>
         </div>
 
-        <div
-          style={{
-            backgroundColor: "white",
-            borderRadius: "20px",
-            padding: "32px",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-          }}
-        >
-          <h2 style={{ marginTop: 0, color: "#1e293b" }}>About</h2>
-          <p style={{ color: "#475569", lineHeight: "1.7", marginBottom: "20px" }}>
-            Welcome to your profile page. This is where users can view their
-            account details, event activity, and personal information for the
-            Event Manager app.
-          </p>
+        <div className="profile-detail-row">
+          <span className="profile-detail-label">Email:</span>
+          <span className="profile-detail-value">{profile.email}</span>
+        </div>
 
-          <div style={{ display: "grid", gap: "14px" }}>
-            <div>
-              <strong style={{ color: "#0f172a" }}>Full Name:</strong>
-              <span style={{ marginLeft: "8px", color: "#475569" }}>
-                {user.name}
-              </span>
-            </div>
+        <div className="profile-detail-row">
+          <span className="profile-detail-label">Account Type:</span>
+          <span className="profile-detail-value">{profile.role}</span>
+        </div>
+      </div>
 
-            <div>
-              <strong style={{ color: "#0f172a" }}>Email:</strong>
-              <span style={{ marginLeft: "8px", color: "#475569" }}>
-                {user.email}
-              </span>
-            </div>
-
-            <div>
-              <strong style={{ color: "#0f172a" }}>Account Type:</strong>
-              <span style={{ marginLeft: "8px", color: "#475569" }}>
-                {user.role}
-              </span>
-            </div>
+      <div className="profile-stats">
+        {stats.map((stat) => (
+          <div key={stat.label} className="profile-stat-card">
+            <h3 className="profile-stat-value">{stat.value}</h3>
+            <p className="profile-stat-label">{stat.label}</p>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
