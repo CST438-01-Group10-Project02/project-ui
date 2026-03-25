@@ -7,6 +7,7 @@ import Events from "./pages/Events.tsx";
 import EventPage from "./pages/components/EventPage.tsx";
 import {useEffect, useState} from "react";
 import CreateEvent from "./pages/CreateEvent.tsx";
+import ProfileEdit from "./pages/ProfileEdit.jsx";
 
 export default function App()  {
 
@@ -31,7 +32,8 @@ export default function App()  {
                 <Route path="/sign-in" element={<SignIn setToken={setToken}/>}/>
                 <Route path="/sign-up" element={<SignUp/>}/>
                 <Route path="/events" element={<Events/>}/>
-                <Route path="/profile" element={<Profile/>}/>
+                <Route path="/profile" element={<Profile setToken={(token)}/>}/>
+                <Route path="/profile/edit" element={<ProfileEdit/>}/>
                 <Route path="/events/:id" element={<EventPage/>}/>
                 <Route path="/events/create/" element={<CreateEvent/>}/>
                 {token?<Route path="/dashboard" element={<Dashboard/>}/>:""}

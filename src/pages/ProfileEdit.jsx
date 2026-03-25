@@ -1,23 +1,27 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {supabaseClient} from "../supabaseClient.js";
 
 export default function ProfileEdit() {
   const navigate = useNavigate();
 
   const storedUser = (() => {
-    try {
+      try {
       return JSON.parse(sessionStorage.getItem("token")) || {};
     } catch {
       return {};
     }
+
   })();
 
   const [formData, setFormData] = useState({
-    name: storedUser.name || "Tanner Butler",
-    email: storedUser.email || "tanner@example.com",
+    name: storedUser.user.user_metadata.username || "user",
+    email: storedUser.user.user_metadata.email || "tanner@example.com",
     role: storedUser.role || "Event Manager User",
     bio: storedUser.bio || "",
   });
+
+
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -27,16 +31,25 @@ export default function ProfileEdit() {
     }));
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  async function handleSubmit(event) {
+      event.preventDefault();
 
-    const updatedUser = {
-      ...storedUser,
-      ...formData,
-    };
 
-    sessionStorage.setItem("token", JSON.stringify(updatedUser));
-    navigate("/profile");
+      const {data,error} = await supabaseClient.auth.updateUser(
+          {
+              email: formData.email,
+              data: {
+                  username: formData.name,
+              },
+
+          });
+
+      console.log('signup data:', data)
+      console.log('signup error:', error)
+
+      sessionStorage.setItem("token", JSON.stringify(data));
+
+      navigate("/profile");
   }
 
   return (

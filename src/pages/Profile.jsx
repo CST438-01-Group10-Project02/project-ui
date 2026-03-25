@@ -4,14 +4,16 @@ import { useNavigate } from "react-router-dom";
 export default function Profile() {
   const navigate = useNavigate();
 
+
+
   const user = useMemo(() => {
     try {
       const token = JSON.parse(sessionStorage.getItem("token"));
 
       return {
-        name: token?.name || "Tanner Butler",
-        email: token?.email || "tanner@example.com",
-        role: token?.role || "Event Manager User",
+          name: token?.user.user_metadata.username || "Tanner Butler",
+          email: token?.user.user_metadata.email || "tanner@example.com",
+          role: token?.role || "Event Manager User",
       };
     } catch {
       return {
